@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <!-- TROQUE AQUI: Altere o título da página que aparece na aba do navegador -->
-    <title>Saber Brincando - Jogos Pedagógicos com IA</title>
+    <title>Saber Brincando - Jogos Pedagógicos para Imprimir</title>
     
     <!-- Ícone da aba do navegador (favicon) -->
     <link rel="icon" href="https://i.postimg.cc/wjs04KMw/SABER-BRINCANDO-3.png">
@@ -24,7 +24,9 @@
         }
         body { font-family: 'Inter', sans-serif; }
         h1, h2, h3 { font-family: 'Poppins', sans-serif; }
-        .hero-bg { background-color: #bebeaa; }
+        /* COR HARMONIZADA: Fundo do cabeçalho com um tom creme suave */
+        .hero-bg { background-color: #FFFBEB; }
+        /* COR HARMONIZADA: Botão primário com o azul do logo */
         .btn-primary {
             background-color: #12b3e4;
             color: white;
@@ -34,15 +36,6 @@
             background-color: #0e9ac4;
             transform: translateY(-2px);
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-        .btn-secondary {
-            background-color: #f59e0b;
-            color: white;
-            transition: all 0.3s ease;
-        }
-        .btn-secondary:hover {
-            background-color: #d97706;
-            transform: translateY(-2px);
         }
         .faq-question.active + .faq-answer {
             max-height: 200px;
@@ -55,10 +48,11 @@
         .pagination-btn {
             border: 1px solid #ddd;
         }
+        /* COR HARMONIZADA: Paginação ativa com o vermelho/coral do logo */
         .pagination-btn.active {
-            background-color: #FF7F50;
+            background-color: #EF4444;
             color: white;
-            border-color: #FF7F50;
+            border-color: #EF4444;
         }
         .pagination-btn:disabled {
             opacity: 0.5;
@@ -79,66 +73,59 @@
         .tab-button:hover {
             background-color: #e5e7eb;
         }
+        /* COR HARMONIZADA: Aba ativa com o azul do logo */
         .tab-button.active {
             background-color: #12b3e4;
             color: white;
             box-shadow: 0 4px 12px -1px rgba(18, 179, 228, 0.4);
             transform: translateY(-2px);
         }
-        /* Modal Styles */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.6);
+        /* Estilos para galeria de imagens e preço */
+        .image-container {
+            position: relative;
+        }
+        /* COR HARMONIZADA: Etiqueta de preço com o vermelho/coral do logo */
+        .price-tag {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            background-color: rgba(239, 68, 68, 0.9); /* Vermelho/Coral */
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-weight: bold;
+            font-size: 0.875rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .slide-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.4);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 2.5rem;
+            height: 2.5rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 1000;
             opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
         }
-        .modal-overlay.visible {
+        .image-container:hover .slide-btn {
             opacity: 1;
-            visibility: visible;
         }
-        .modal-content {
-            background: white;
-            padding: 2rem;
-            border-radius: 1rem;
-            max-width: 90%;
-            width: 500px;
-            position: relative;
-            transform: scale(0.9);
-            transition: transform 0.3s ease;
+        .slide-btn:hover {
+            background-color: rgba(0, 0, 0, 0.7);
         }
-        .modal-overlay.visible .modal-content {
-            transform: scale(1);
+        .slide-btn.left {
+            left: 0.5rem;
         }
-        .modal-close {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: #9ca3af;
-        }
-        /* Loader styles */
-        .loader {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #12b3e4;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 2rem auto;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .slide-btn.right {
+            right: 0.5rem;
         }
     </style>
 </head>
@@ -187,27 +174,6 @@
             <div id="pagination-controls" class="flex justify-center items-center mt-12 space-x-2"></div>
         </section>
 
-        <!-- NOVA SEÇÃO GEMINI: GERADOR DE JOGOS -->
-        <section class="mb-20 bg-gradient-to-br from-cyan-50 to-blue-100 py-16 rounded-2xl">
-             <div class="container mx-auto px-6 text-center">
-                <h2 class="text-3xl font-bold mb-2">✨ Crie seu Próprio Jogo!</h2>
-                <p class="text-gray-600 mb-8 max-w-2xl mx-auto">Sem ideias? Deixe nossa IA criar um conceito de jogo para você! Diga um tema e uma habilidade que queira desenvolver.</p>
-                <div class="max-w-xl mx-auto flex flex-col sm:flex-row gap-4 mb-6">
-                    <input id="game-theme" type="text" placeholder="Ex: Dinossauros, Espaço, Fundo do mar" class="flex-grow p-3 rounded-xl border-gray-300 shadow-sm focus:ring-cyan-500 focus:border-cyan-500">
-                    <input id="game-skill" type="text" placeholder="Ex: Contar até 10, Alfabeto" class="flex-grow p-3 rounded-xl border-gray-300 shadow-sm focus:ring-cyan-500 focus:border-cyan-500">
-                </div>
-                <button id="generate-game-btn" class="btn-primary font-bold rounded-full py-3 px-8 text-lg">Gerar Conceito de Jogo</button>
-                <div id="game-idea-result" class="mt-8 text-left max-w-2xl mx-auto bg-white p-6 rounded-2xl shadow-inner hidden"></div>
-                <!-- NOVO: Botão de CTA para WhatsApp -->
-                <div id="whatsapp-cta-container" class="mt-6 text-center hidden">
-                    <a id="whatsapp-link" href="#" target="_blank" class="btn-secondary font-bold rounded-full py-3 px-8 text-lg inline-block">
-                        Gostou da ideia? Peça um orçamento!
-                    </a>
-                </div>
-            </div>
-        </section>
-
-
         <!-- ESTRUTURA DE ABAS -->
         <section class="mb-20">
             <div class="mb-8 p-2 bg-gray-100 rounded-xl max-w-lg mx-auto">
@@ -233,8 +199,8 @@
                 <div id="clientes" class="tab-content hidden">
                     <h2 class="text-3xl font-bold text-center mb-10">O que dizem nossos clientes?</h2>
                     <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                        <div class="bg-gray-50 p-6 rounded-2xl border-l-4 border-amber-400"><p class="text-gray-600 italic">"Meus filhos amaram os jogos interativos. É uma ótima opção para manter eles fora das telas por horas, explorando o senso criativo, desenvolvendo a autonomia, fortalecendo o aspecto cognitivo com um material de qualidade, pedagogicamente muito bem elaborado para cada idade."</p><p class="font-bold text-right mt-4">- Bruna P., Mãe da Olívia, 4 anos e do Otávio, 11 anos</p></div>
-                        <div class="bg-gray-50 p-6 rounded-2xl border-l-4 border-amber-400"><p class="text-gray-600 italic">"Material lindo, organizado e muito bem estruturado"</p><p class="font-bold text-right mt-4">- Danieli F., Professora da sala de AEE</p></div>
+                        <div class="bg-gray-50 p-6 rounded-2xl border-l-4 border-red-400"><p class="text-gray-600 italic">"Meus filhos amaram os jogos interativos. É uma ótima opção para manter eles fora das telas por horas, explorando o senso criativo, desenvolvendo a autonomia, fortalecendo o aspecto cognitivo com um material de qualidade, pedagogicamente muito bem elaborado para cada idade."</p><p class="font-bold text-right mt-4">- Bruna P., Mãe da Olívia, 4 anos e do Otávio, 11 anos</p></div>
+                        <div class="bg-gray-50 p-6 rounded-2xl border-l-4 border-red-400"><p class="text-gray-600 italic">"Material lindo, organizado e muito bem estruturado"</p><p class="font-bold text-right mt-4">- Danieli F., Professora da sala de AEE</p></div>
                     </div>
                 </div>
 
@@ -264,31 +230,130 @@
         </div>
     </footer>
 
-    <!-- Modal para ideias de atividades -->
-    <div id="ideas-modal" class="modal-overlay">
-        <div class="modal-content">
-            <span id="modal-close-btn" class="modal-close">&times;</span>
-            <h3 id="modal-title" class="text-2xl font-bold mb-4 text-center"></h3>
-            <div id="modal-body"></div>
-        </div>
-    </div>
-
     <script>
     document.addEventListener('DOMContentLoaded', () => {
 
+        // -------------------------------------------------------------------
+        // --- ÁREA DE EDIÇÃO PRINCIPAL: DADOS DOS PRODUTOS ---
+        // -------------------------------------------------------------------
+        // TROQUE AQUI: Adicione, remova ou edite seus jogos nesta lista.
+        // NOVO: 'images' agora é uma lista de links. 'price' foi adicionado.
         const productsData = [
-            { image: 'https://placehold.co/400x300/FFC0CB/333333?text=Jogo+1', title: 'Jogo das Sílabas Divertidas', description: 'Uma forma lúdica para as crianças formarem palavras e desenvolverem a consciência fonológica.', hotmartLink: 'https://pay.hotmart.com/SEU_LINK_AQUI', clicks: 150 },
-            { image: 'https://placehold.co/400x300/A2D2FF/333333?text=Jogo+2', title: 'Aventura Matemática', description: 'Desafios de soma e subtração em um tabuleiro de jogo emocionante para os pequenos.', hotmartLink: 'https://pay.hotmart.com/SEU_LINK_AQUI', clicks: 230 },
-            { image: 'https://placehold.co/400x300/BDE0FE/333333?text=Jogo+3', title: 'Detetives das Emoções', description: 'Um jogo para ajudar as crianças a identificar e nomear sentimentos de forma divertida.', hotmartLink: 'https://pay.hotmart.com/SEU_LINK_AQUI', clicks: 95 },
-            { image: 'https://placehold.co/400x300/CDB4DB/333333?text=Jogo+4', title: 'Construtores de Frases', description: 'Monte frases malucas e aprenda sobre a estrutura das sentenças.', hotmartLink: 'https://pay.hotmart.com/SEU_LINK_AQUI', clicks: 80 },
-            { image: 'https://placehold.co/400x300/FFC8DD/333333?text=Jogo+5', title: 'Bingo dos Animais', description: 'Aprenda nomes de animais e desenvolva a atenção de forma clássica e divertida.', hotmartLink: 'https://pay.hotmart.com/SEU_LINK_AQUI', clicks: 310 },
-            { image: 'https://placehold.co/400x300/FFAFCC/333333?text=Jogo+6', title: 'Labirinto da Tabuada', description: 'Resolva multiplicações para encontrar o caminho certo e escapar do labirinto.', hotmartLink: 'https://pay.hotmart.com/SEU_LINK_AQUI', clicks: 120 },
-            { image: 'https://placehold.co/400x300/BDE0FE/333333?text=Jogo+7', title: 'Fábrica de Histórias', description: 'Combine personagens, lugares e objetos para criar histórias incríveis.', hotmartLink: 'https://pay.hotmart.com/SEU_LINK_AQUI', clicks: 180 },
-            { image: 'https://placehold.co/400x300/A2D2FF/333333?text=Jogo+8', title: 'Caça ao Tesouro Geométrico', description: 'Encontre formas geométricas escondidas e aprenda seus nomes e propriedades.', hotmartLink: 'https://pay.hotmart.com/SEU_LINK_AQUI', clicks: 75 },
-            { image: 'https://placehold.co/400x300/FFC0CB/333333?text=Jogo+9', title: 'Jogo da Memória Corporal', description: 'Imite as poses e desenvolva a memória e a coordenação motora.', hotmartLink: 'https://pay.hotmart.com/SEU_LINK_AQUI', clicks: 250 },
-            { image: 'https://placehold.co/400x300/CDB4DB/333333?text=Jogo+10', title: 'Diário das Emoções', description: 'Uma ferramenta para ajudar a criança a expressar e entender o que sente.', hotmartLink: 'https://pay.hotmart.com/SEU_LINK_AQUI', clicks: 110 },
-            { image: 'https://i.postimg.cc/wjs04KMw/SABER-BRINCANDO-3.png', title: 'Mercadinho Divertido', description: 'Brinque de fazer compras e aprenda sobre dinheiro e contas simples.', hotmartLink: 'https://pay.hotmart.com/SEU_LINK_AQUI', clicks: 280 },
-            { image: 'https://placehold.co/400x300/FFAFCC/333333?text=Jogo+12', title: 'Detetive Ortográfico', description: 'Encontre os erros de português e torne-se um mestre da ortografia.', hotmartLink: 'https://pay.hotmart.com/SEU_LINK_AQUI', clicks: 190 }
+            {
+                id: 1, // ID único para cada produto
+                images: [
+                    'https://placehold.co/400x300/FFC0CB/333333?text=Jogo+1+-+Foto+1',
+                    'https://placehold.co/400x300/FFC0CB/333333?text=Jogo+1+-+Foto+2'
+                ],
+                title: 'Jogo das Sílabas Divertidas',
+                description: 'Uma forma lúdica para as crianças formarem palavras e desenvolverem a consciência fonológica.',
+                price: 'R$ 19,90',
+                hotmartLink: 'https://pay.hotmart.com/SEU_LINK_AQUI',
+                clicks: 150
+            },
+            {
+                id: 2,
+                images: ['https://placehold.co/400x300/A2D2FF/333333?text=Jogo+2'],
+                title: 'Aventura Matemática',
+                description: 'Desafios de soma e subtração em um tabuleiro de jogo emocionante para os pequenos.',
+                price: 'R$ 24,90',
+                hotmartLink: 'https://pay.hotmart.com/SEU_LINK_AQUI',
+                clicks: 230
+            },
+            {
+                id: 3,
+                images: [
+                    'https://placehold.co/400x300/BDE0FE/333333?text=Jogo+3+-+Foto+A',
+                    'https://placehold.co/400x300/BDE0FE/333333?text=Jogo+3+-+Foto+B',
+                    'https://placehold.co/400x300/BDE0FE/333333?text=Jogo+3+-+Foto+C'
+                ],
+                title: 'Detetives das Emoções',
+                description: 'Um jogo para ajudar as crianças a identificar e nomear sentimentos de forma divertida.',
+                price: 'R$ 15,00',
+                hotmartLink: 'https://pay.hotmart.com/SEU_LINK_AQUI',
+                clicks: 95
+            },
+            {
+                id: 4,
+                images: ['https://placehold.co/400x300/CDB4DB/333333?text=Jogo+4'],
+                title: 'Construtores de Frases',
+                description: 'Monte frases malucas e aprenda sobre a estrutura das sentenças.',
+                price: 'R$ 12,90',
+                hotmartLink: 'https://pay.hotmart.com/SEU_LINK_AQUI',
+                clicks: 80
+            },
+            {
+                id: 5,
+                images: ['https://placehold.co/400x300/FFC8DD/333333?text=Jogo+5'],
+                title: 'Bingo dos Animais',
+                description: 'Aprenda nomes de animais e desenvolva a atenção de forma clássica e divertida.',
+                price: 'R$ 9,90',
+                hotmartLink: 'https://pay.hotmart.com/SEU_LINK_AQUI',
+                clicks: 310
+            },
+            {
+                id: 6,
+                images: ['https://placehold.co/400x300/FFAFCC/333333?text=Jogo+6'],
+                title: 'Labirinto da Tabuada',
+                description: 'Resolva multiplicações para encontrar o caminho certo e escapar do labirinto.',
+                price: 'R$ 14,90',
+                hotmartLink: 'https://pay.hotmart.com/SEU_LINK_AQUI',
+                clicks: 120
+            },
+            {
+                id: 7,
+                images: ['https://placehold.co/400x300/BDE0FE/333333?text=Jogo+7'],
+                title: 'Fábrica de Histórias',
+                description: 'Combine personagens, lugares e objetos para criar histórias incríveis.',
+                price: 'R$ 18,00',
+                hotmartLink: 'https://pay.hotmart.com/SEU_LINK_AQUI',
+                clicks: 180
+            },
+            {
+                id: 8,
+                images: ['https://placehold.co/400x300/A2D2FF/333333?text=Jogo+8'],
+                title: 'Caça ao Tesouro Geométrico',
+                description: 'Encontre formas geométricas escondidas e aprenda seus nomes e propriedades.',
+                price: 'R$ 13,50',
+                hotmartLink: 'https://pay.hotmart.com/SEU_LINK_AQUI',
+                clicks: 75
+            },
+            {
+                id: 9,
+                images: ['https://placehold.co/400x300/FFC0CB/333333?text=Jogo+9'],
+                title: 'Jogo da Memória Corporal',
+                description: 'Imite as poses e desenvolva a memória e a coordenação motora.',
+                price: 'R$ 11,90',
+                hotmartLink: 'https://pay.hotmart.com/SEU_LINK_AQUI',
+                clicks: 250
+            },
+            {
+                id: 10,
+                images: ['https://placehold.co/400x300/CDB4DB/333333?text=Jogo+10'],
+                title: 'Diário das Emoções',
+                description: 'Uma ferramenta para ajudar a criança a expressar e entender o que sente.',
+                price: 'R$ 22,00',
+                hotmartLink: 'https://pay.hotmart.com/SEU_LINK_AQUI',
+                clicks: 110
+            },
+            {
+                id: 11,
+                images: ['https://i.postimg.cc/wjs04KMw/SABER-BRINCANDO-3.png'],
+                title: 'Mercadinho Divertido',
+                description: 'Brinque de fazer compras e aprenda sobre dinheiro e contas simples.',
+                price: 'R$ 25,00',
+                hotmartLink: 'https://pay.hotmart.com/SEU_LINK_AQUI',
+                clicks: 280
+            },
+            {
+                id: 12,
+                images: ['https://placehold.co/400x300/FFAFCC/333333?text=Jogo+12'],
+                title: 'Detetive Ortográfico',
+                description: 'Encontre os erros de português e torne-se um mestre da ortografia.',
+                price: 'R$ 17,90',
+                hotmartLink: 'https://pay.hotmart.com/SEU_LINK_AQUI',
+                clicks: 190
+            }
         ];
         
         const productList = document.getElementById('product-list');
@@ -297,138 +362,57 @@
         const itemsPerPage = 10; 
         productsData.sort((a, b) => b.clicks - a.clicks);
 
-        // --- LÓGICA DO GEMINI API ---
-        const callGemini = async (prompt) => {
-            const apiKey = "AIzaSyCrmlyhvb8CwoninaEaEaWui8YLgn8gcNU"; // Deixe em branco, será fornecido pelo ambiente
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-            
-            const payload = {
-                contents: [{ role: "user", parts: [{ text: prompt }] }]
-            };
-
-            try {
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-
-                if (!response.ok) {
-                    throw new Error(`Erro na API: ${response.statusText}`);
-                }
-
-                const result = await response.json();
-                
-                if (result.candidates && result.candidates.length > 0) {
-                    return result.candidates[0].content.parts[0].text;
-                } else {
-                    return "Não foi possível gerar ideias no momento. Tente novamente mais tarde.";
-                }
-            } catch (error) {
-                console.error("Erro ao chamar a API Gemini:", error);
-                return "Ocorreu um erro de conexão. Verifique sua internet e tente novamente.";
-            }
-        };
-
         function displayProducts(page, items) {
             productList.innerHTML = '';
             page--; 
             const start = itemsPerPage * page;
             const end = start + itemsPerPage;
             const paginatedItems = items.slice(start, end);
-            paginatedItems.forEach(product => {
+            paginatedItems.forEach((product, index) => {
+                const uniqueId = `product-${product.id}`;
+                const hasMultipleImages = product.images.length > 1;
+
                 const productCard = `
                     <div class="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col transform hover:scale-105 transition-transform duration-300">
-                        <img src="${product.image}" alt="[Imagem de ${product.title}]" class="w-full h-48 object-cover" onerror="this.onerror=null;this.src='https://placehold.co/400x300/e2e8f0/4a5568?text=Imagem+Indispon%C3%ADvel';">
+                        <div class="image-container">
+                            <img id="img-${uniqueId}" src="${product.images[0]}" alt="[Imagem de ${product.title}]" class="w-full h-48 object-cover" data-current-index="0">
+                            <div class="price-tag">${product.price}</div>
+                            ${hasMultipleImages ? `
+                                <button class="slide-btn left" data-product-id="${product.id}" data-direction="-1">&#10094;</button>
+                                <button class="slide-btn right" data-product-id="${product.id}" data-direction="1">&#10095;</button>
+                            ` : ''}
+                        </div>
                         <div class="p-6 flex flex-col flex-grow">
                             <h3 class="text-xl font-bold mb-2">${product.title}</h3>
                             <p class="text-gray-600 flex-grow mb-4">${product.description}</p>
-                            <div class="flex flex-col gap-2 mt-auto">
-                                <a href="${product.hotmartLink}" target="_blank" class="w-full text-center btn-primary font-bold rounded-full py-3 px-6">Comprar Agora</a>
-                                <button class="w-full text-center btn-secondary font-bold rounded-full py-3 px-6 generate-ideas-btn" data-title="${product.title}" data-description="${product.description}">✨ Gerar Ideias</button>
-                            </div>
+                            <a href="${product.hotmartLink}" target="_blank" class="mt-auto w-full text-center btn-primary font-bold rounded-full py-3 px-6">Comprar Agora</a>
                         </div>
                     </div>`;
                 productList.innerHTML += productCard;
             });
-
-            document.querySelectorAll('.generate-ideas-btn').forEach(button => {
-                button.addEventListener('click', handleGenerateIdeas);
-            });
         }
         
-        const modal = document.getElementById('ideas-modal');
-        const modalTitle = document.getElementById('modal-title');
-        const modalBody = document.getElementById('modal-body');
-        const modalCloseBtn = document.getElementById('modal-close-btn');
-
-        const showModal = () => modal.classList.add('visible');
-        const hideModal = () => modal.classList.remove('visible');
-
-        modalCloseBtn.addEventListener('click', hideModal);
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                hideModal();
-            }
-        });
-
-        async function handleGenerateIdeas(event) {
-            const title = event.target.dataset.title;
-            const description = event.target.dataset.description;
-            
-            modalTitle.innerText = `Ideias para "${title}"`;
-            modalBody.innerHTML = '<div class="loader"></div><p class="text-center text-gray-500">Gerando atividades criativas...</p>';
-            showModal();
-
-            const prompt = `Você é um pedagogo especialista em atividades lúdicas. Para um jogo em PDF chamado '${title}', descrito como '${description}', crie 3 ideias de atividades extras e criativas para fazer com crianças. Apresente como uma lista de tópicos simples, usando um emoji em cada item. Seja breve e direto.`;
-            
-            const ideas = await callGemini(prompt);
-            modalBody.innerHTML = ideas.replace(/\n/g, '<br>');
-        }
-
-        const generateGameBtn = document.getElementById('generate-game-btn');
-        const gameThemeInput = document.getElementById('game-theme');
-        const gameSkillInput = document.getElementById('game-skill');
-        const gameIdeaResult = document.getElementById('game-idea-result');
-        const whatsappContainer = document.getElementById('whatsapp-cta-container');
-        const whatsappLink = document.getElementById('whatsapp-link');
-
-        generateGameBtn.addEventListener('click', async () => {
-            const theme = gameThemeInput.value.trim();
-            const skill = gameSkillInput.value.trim();
-
-            if (!theme || !skill) {
-                gameIdeaResult.innerHTML = '<p class="text-red-500 font-semibold">Por favor, preencha o tema e a habilidade.</p>';
-                gameIdeaResult.classList.remove('hidden');
-                whatsappContainer.classList.add('hidden');
-                return;
-            }
-
-            gameIdeaResult.classList.remove('hidden');
-            whatsappContainer.classList.add('hidden');
-            gameIdeaResult.innerHTML = '<div class="loader"></div><p class="text-center text-gray-500">Criando um novo conceito de jogo...</p>';
-            
-            const prompt = `Aja como um designer de jogos pedagógicos. Crie um conceito para um novo jogo de imprimir em PDF. O tema principal é '${theme}' e a habilidade a ser desenvolvida é '${skill}'. Descreva o conceito em 3 partes: '### Objetivo do Jogo:', '### Componentes Necessários:' e '### Como Jogar:'. Use uma linguagem animada e criativa, ideal para pais e professores. Use markdown para formatar os títulos.`;
-            
-            const rawConcept = await callGemini(prompt);
-            
-            if (rawConcept && !rawConcept.includes("Não foi possível")) {
-                let formattedConcept = rawConcept.replace(/### (.*?):/g, '<h4 class="text-lg font-bold text-cyan-600 mt-4 mb-2">$1:</h4>');
-                formattedConcept = formattedConcept.replace(/\*/g, '<br>• ');
-                gameIdeaResult.innerHTML = formattedConcept;
-
-                // TROQUE AQUI: Coloque seu número de WhatsApp com o código do país, sem o '+' ou '00'. Ex: 5511999998888
-                const yourWhatsappNumber = '5511999998888'; 
-                const whatsappMessage = `Olá! Gostei da ideia de jogo gerada no site:\n\n---\n\n${rawConcept}\n\n---\n\nGostaria de pedir um orçamento para transformá-la em um jogo personalizado.`;
-                whatsappLink.href = `https://wa.me/${yourWhatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
+        productList.addEventListener('click', function(e) {
+            if (e.target.classList.contains('slide-btn')) {
+                const productId = parseInt(e.target.dataset.productId);
+                const direction = parseInt(e.target.dataset.direction);
                 
-                whatsappContainer.classList.remove('hidden');
-            } else {
-                gameIdeaResult.innerHTML = `<p class="text-red-500 font-semibold">${rawConcept}</p>`;
-                whatsappContainer.classList.add('hidden');
+                const product = productsData.find(p => p.id === productId);
+                const imgElement = document.getElementById(`img-product-${productId}`);
+                let currentIndex = parseInt(imgElement.dataset.currentIndex);
+                
+                let newIndex = currentIndex + direction;
+                
+                if (newIndex < 0) {
+                    newIndex = product.images.length - 1;
+                } else if (newIndex >= product.images.length) {
+                    newIndex = 0;
+                }
+                
+                imgElement.src = product.images[newIndex];
+                imgElement.dataset.currentIndex = newIndex;
             }
         });
-
 
         function setupPagination(items) {
             paginationControls.innerHTML = '';
@@ -474,7 +458,7 @@
         
         const faqContainer = document.getElementById('faq-container');
         faqData.forEach(item => {
-            const faqItem = `<div class="border border-gray-200 rounded-2xl overflow-hidden"><button class="faq-question w-full text-left p-4 font-semibold flex justify-between items-center transition"><span>${item.question}</span><span class="faq-icon text-2xl text-amber-500 transition-transform duration-300">+</span></button><div class="faq-answer overflow-hidden max-h-0 transition-all duration-500 ease-in-out px-4"><p class="text-gray-600">${item.answer}</p></div></div>`;
+            const faqItem = `<div class="border border-gray-200 rounded-2xl overflow-hidden"><button class="faq-question w-full text-left p-4 font-semibold flex justify-between items-center transition"><span>${item.question}</span><span class="faq-icon text-2xl text-blue-500 transition-transform duration-300">+</span></button><div class="faq-answer overflow-hidden max-h-0 transition-all duration-500 ease-in-out px-4"><p class="text-gray-600">${item.answer}</p></div></div>`;
             faqContainer.innerHTML += faqItem;
         });
         

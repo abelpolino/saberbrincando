@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- TROQUE AQUI: Altere o título da página que aparece na aba do navegador -->
+    <title>Saber Brincando - Jogos Pedagógicos com IA</title>
+    
+    <!-- Ícone da aba do navegador (favicon) -->
+    <link rel="icon" href="https://i.postimg.cc/wjs04KMw/SABER-BRINCANDO-3.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Poppins:wght@700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm & Friendly -->
+    <!-- Application Structure Plan: The application is designed as a classic sales landing page, following a persuasive user flow. It starts with a strong hero section to capture attention, followed by a product showcase using interactive cards. It then explains the value proposition ('How it Works', 'Benefits'), builds trust with testimonials and an 'About Me' section, and finally overcomes objections with an FAQ. This linear, funnel-like structure is optimal for guiding a user from initial interest to a purchase decision, which is the sole goal of this page. -->
+    <!-- Visualization & Content Choices: 1. Product Showcase (HTML/Grid/JS): Goal=Organize/Compare. Dynamically generated cards are used to cleanly present multiple products. This is more flexible than static HTML and easier for the user to update. 2. How it Works (Modal): Goal=Inform. A modal window is used to explain the digital delivery process without cluttering the main page. 3. Benefits Section (HTML/Flexbox): Goal=Inform. Icons paired with text provide a quick, scannable overview of the product's advantages. 4. FAQ (Accordion): Goal=Organize. An accordion neatly contains answers to common questions, reducing page length and user overwhelm. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3 { font-family: 'Poppins', sans-serif; }
+        .hero-bg { background-color: #bebeaa; }
+        .btn-primary {
+            background-color: #12b3e4;
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #0e9ac4;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .btn-secondary {
+            background-color: #f59e0b;
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .btn-secondary:hover {
+            background-color: #d97706;
+            transform: translateY(-2px);
+        }
+        .faq-question.active + .faq-answer {
+            max-height: 200px;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+        }
+        .faq-question.active .faq-icon {
+            transform: rotate(45deg);
+        }
+        .pagination-btn {
+            border: 1px solid #ddd;
+        }
+        .pagination-btn.active {
+            background-color: #FF7F50;
+            color: white;
+            border-color: #FF7F50;
+        }
+        .pagination-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        #jogos {
+            scroll-margin-top: 4rem;
+        }
+        .tab-button {
+            padding: 0.75rem 1.25rem;
+            font-weight: 600;
+            color: #4b5563;
+            border-radius: 0.75rem;
+            transition: all 0.3s ease-in-out;
+            background-color: transparent;
+            border: none;
+        }
+        .tab-button:hover {
+            background-color: #e5e7eb;
+        }
+        .tab-button.active {
+            background-color: #12b3e4;
+            color: white;
+            box-shadow: 0 4px 12px -1px rgba(18, 179, 228, 0.4);
+            transform: translateY(-2px);
+        }
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .modal-overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            max-width: 90%;
+            width: 500px;
+            position: relative;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+        .modal-overlay.visible .modal-content {
+            transform: scale(1);
+        }
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #9ca3af;
+        }
+        /* Loader styles */
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #12b3e4;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 2rem auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- HERO SECTION -->
+    <header class="hero-bg">
+        <div class="container mx-auto px-6 py-16 text-center flex flex-col items-center">
+            <img src="https://i.postimg.cc/wjs04KMw/SABER-BRINCANDO-3.png" alt="[Logo do Saber Brincando]" class="h-32 w-32 md:h-40 md:w-40 rounded-full shadow-lg mb-6">
+            <h1 class="text-4xl md:text-6xl font-bold text-gray-800 leading-tight">Aprender nunca foi tão divertido!</h1>
+            <p class="mt-4 text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">Jogos pedagógicos criativos e eficazes da <span class="font-bold">Saber Brincando</span>, prontos para imprimir e transformar o aprendizado.</p>
+            <a href="#jogos" class="mt-8 inline-block btn-primary font-bold rounded-full py-4 px-10 text-lg">Ver os Jogos</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+
+        <!-- HOW IT WORKS -->
+        <section class="text-center mb-20">
+            <h2 class="text-3xl font-bold mb-4">Como funciona? É simples!</h2>
+            <div class="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+                <div class="bg-white p-6 rounded-2xl shadow-md">
+                    <div class="text-4xl mb-3">1️⃣</div>
+                    <h3 class="text-xl font-bold mb-2">Escolha e Compre</h3>
+                    <p>Selecione o jogo ideal e faça o pagamento seguro pela Hotmart.</p>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-md">
+                    <div class="text-4xl mb-3">2️⃣</div>
+                    <h3 class="text-xl font-bold mb-2">Receba o PDF</h3>
+                    <p>Você recebe o arquivo PDF em alta qualidade diretamente no seu e-mail.</p>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-md">
+                    <div class="text-4xl mb-3">3️⃣</div>
+                    <h3 class="text-xl font-bold mb-2">Imprima e Brinque</h3>
+                    <p>Imprima em casa ou na gráfica, recorte e comece a diversão educativa!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- GAMES SECTION -->
+        <section id="jogos" class="mb-20">
+            <h2 class="text-3xl font-bold text-center mb-10">Nossos Jogos Mais Vendidos</h2>
+            <div id="product-list" class="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
+                <!-- Os produtos serão inseridos aqui pelo JavaScript -->
+            </div>
+            <div id="pagination-controls" class="flex justify-center items-center mt-12 space-x-2"></div>
+        </section>
+
+        <!-- NOVA SEÇÃO GEMINI: GERADOR DE JOGOS -->
+        <section class="mb-20 bg-gradient-to-br from-cyan-50 to-blue-100 py-16 rounded-2xl">
+             <div class="container mx-auto px-6 text-center">
+                <h2 class="text-3xl font-bold mb-2">✨ Crie seu Próprio Jogo!</h2>
+                <p class="text-gray-600 mb-8 max-w-2xl mx-auto">Sem ideias? Deixe nossa IA criar um conceito de jogo para você! Diga um tema e uma habilidade que queira desenvolver.</p>
+                <div class="max-w-xl mx-auto flex flex-col sm:flex-row gap-4 mb-6">
+                    <input id="game-theme" type="text" placeholder="Ex: Dinossauros, Espaço, Fundo do mar" class="flex-grow p-3 rounded-xl border-gray-300 shadow-sm focus:ring-cyan-500 focus:border-cyan-500">
+                    <input id="game-skill" type="text" placeholder="Ex: Contar até 10, Alfabeto" class="flex-grow p-3 rounded-xl border-gray-300 shadow-sm focus:ring-cyan-500 focus:border-cyan-500">
+                </div>
+                <button id="generate-game-btn" class="btn-primary font-bold rounded-full py-3 px-8 text-lg">Gerar Conceito de Jogo</button>
+                <div id="game-idea-result" class="mt-8 text-left max-w-2xl mx-auto bg-white p-6 rounded-2xl shadow-inner hidden"></div>
+                <!-- NOVO: Botão de CTA para WhatsApp -->
+                <div id="whatsapp-cta-container" class="mt-6 text-center hidden">
+                    <a id="whatsapp-link" href="#" target="_blank" class="btn-secondary font-bold rounded-full py-3 px-8 text-lg inline-block">
+                        Gostou da ideia? Peça um orçamento!
+                    </a>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ESTRUTURA DE ABAS -->
+        <section class="mb-20">
+            <div class="mb-8 p-2 bg-gray-100 rounded-xl max-w-lg mx-auto">
+                <nav class="flex justify-center space-x-1" aria-label="Tabs">
+                    <button class="tab-button active flex-1 text-center" data-tab="vantagens">Vantagens</button>
+                    <button class="tab-button flex-1 text-center" data-tab="clientes">Clientes</button>
+                    <button class="tab-button flex-1 text-center" data-tab="quemsomos">Quem Somos</button>
+                    <button class="tab-button flex-1 text-center" data-tab="duvidas">Dúvidas</button>
+                </nav>
+            </div>
+
+            <div class="bg-white p-6 sm:p-10 rounded-2xl shadow-lg">
+                <div id="vantagens" class="tab-content">
+                    <h2 class="text-3xl font-bold text-center mb-10">Vantagens dos Nossos Jogos</h2>
+                    <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                        <div class="flex items-start"><span class="text-3xl mr-4">💡</span><div><h3 class="font-bold text-lg">Estimula o Raciocínio</h3><p class="text-gray-600">Desafios que desenvolvem a lógica e a resolução de problemas.</p></div></div>
+                        <div class="flex items-start"><span class="text-3xl mr-4">🎨</span><div><h3 class="font-bold text-lg">Desenvolve a Criatividade</h3><p class="text-gray-600">Atividades que incentivam a imaginação e a expressão.</p></div></div>
+                        <div class="flex items-start"><span class="text-3xl mr-4">🖨️</span><div><h3 class="font-bold text-lg">Acesso Imediato</h3><p class="text-gray-600">Compre e receba na hora, sem frete e sem espera.</p></div></div>
+                        <div class="flex items-start"><span class="text-3xl mr-4">👨‍👩‍👧</span><div><h3 class="font-bold text-lg">Fortalece Vínculos</h3><p class="text-gray-600">Uma ótima oportunidade para momentos de qualidade em família.</p></div></div>
+                    </div>
+                </div>
+
+                <div id="clientes" class="tab-content hidden">
+                    <h2 class="text-3xl font-bold text-center mb-10">O que dizem nossos clientes?</h2>
+                    <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                        <div class="bg-gray-50 p-6 rounded-2xl border-l-4 border-amber-400"><p class="text-gray-600 italic">"Meus filhos amaram os jogos interativos. É uma ótima opção para manter eles fora das telas por horas, explorando o senso criativo, desenvolvendo a autonomia, fortalecendo o aspecto cognitivo com um material de qualidade, pedagogicamente muito bem elaborado para cada idade."</p><p class="font-bold text-right mt-4">- Bruna P., Mãe da Olívia, 4 anos e do Otávio, 11 anos</p></div>
+                        <div class="bg-gray-50 p-6 rounded-2xl border-l-4 border-amber-400"><p class="text-gray-600 italic">"Material lindo, organizado e muito bem estruturado"</p><p class="font-bold text-right mt-4">- Danieli F., Professora da sala de AEE</p></div>
+                    </div>
+                </div>
+
+                <div id="quemsomos" class="tab-content hidden">
+                    <h2 class="text-3xl font-bold text-center mb-10">Quem Somos</h2>
+                    <div class="flex flex-col md:flex-row items-center justify-center gap-10">
+                        <img src="https://i.postimg.cc/mr9pkPH3/qs.jpg" alt="[Foto dos idealizadores do Saber Brincando]" class="w-48 h-48 md:w-64 md:h-64 rounded-full object-cover shadow-xl">
+                        <div class="md:w-1/2 text-center md:text-left"><p class="text-gray-600 text-lg leading-relaxed">Olá! Somos <span class="font-bold">Abel e Andressa</span>, os criadores por trás do Saber Brincando. Um cara do TI e uma pedagoga, nossa paixão é criar ferramentas que tornam o aprendizado uma jornada divertida e eficaz. Cada jogo é desenvolvido com muito carinho e cuidado, pensando em fortalecer os laços familiares e despertar a curiosidade das crianças no ambiente escolar. Acreditamos que a melhor forma de aprender é, e sempre será, brincando!</p></div>
+                    </div>
+                </div>
+
+                <div id="duvidas" class="tab-content hidden">
+                    <h2 class="text-3xl font-bold text-center mb-10">Dúvidas Frequentes</h2>
+                    <div id="faq-container" class="space-y-4 max-w-3xl mx-auto"></div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-800 text-white mt-20">
+        <div class="container mx-auto px-6 py-10 text-center">
+            <h2 class="text-3xl font-bold">Pronto para começar a diversão?</h2>
+            <p class="mt-2">Escolha seu jogo e transforme o aprendizado hoje mesmo!</p>
+            <a href="#jogos" class="mt-6 inline-block btn-primary font-bold rounded-full py-4 px-10 text-lg">Quero meu Jogo Agora!</a>
+            <p class="mt-8 text-sm text-gray-400">&copy; 2025 Saber Brincando. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Modal para ideias de atividades -->
+    <div id="ideas-modal" class="modal-overlay">
+        <div class="modal-content">
+            <span id="modal-close-btn" class="modal-close">&times;</span>
+            <h3 id="modal-title" class="text-2xl font-bold mb-4 text-center"></h3>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+        const productsData = [
+            { image: 'https://placehold.co/400x300/FFC0CB/333333?text=Jogo+1', title: 'Jogo das Sílabas Divertidas', description: 'Uma forma lúdica para as crianças formarem palavras e desenvolverem a consciência fonológica.', hotmartLink: 'https://pay.hotmart.com/SEU_LINK_AQUI', clicks: 150 },
+            { image: 'https://placehold.co/400x300/A2D2FF/333333?text=Jogo+2', title: 'Aventura Matemática', description: 'Desafios de soma e subtração em um tabuleiro de jogo emocionante para os pequenos.', hotmartLink: 'https://pay.hotmart.com/SEU_LINK_AQUI', clicks: 230 },
+            { image: 'https://placehold.co/400x300/BDE0FE/333333?text=Jogo+3', title: 'Detetives das Emoções', description: 'Um jogo para ajudar as crianças a identificar e nomear sentimentos de forma divertida.', hotmartLink: 'https://pay.hotmart.com/SEU_LINK_AQUI', clicks: 95 },
+            { image: 'https://placehold.co/400x300/CDB4DB/333333?text=Jogo+4', title: 'Construtores de Frases', description: 'Monte frases malucas e aprenda sobre a estrutura das sentenças.', hotmartLink: 'https://pay.hotmart.com/SEU_LINK_AQUI', clicks: 80 },
+            { image: 'https://placehold.co/400x300/FFC8DD/333333?text=Jogo+5', title: 'Bingo dos Animais', description: 'Aprenda nomes de animais e desenvolva a atenção de forma clássica e divertida.', hotmartLink: 'https://pay.hotmart.com/SEU_LINK_AQUI', clicks: 310 },
+            { image: 'https://placehold.co/400x300/FFAFCC/333333?text=Jogo+6', title: 'Labirinto da Tabuada', description: 'Resolva multiplicações para encontrar o caminho certo e escapar do labirinto.', hotmartLink: 'https://pay.hotmart.com/SEU_LINK_AQUI', clicks: 120 },
+            { image: 'https://placehold.co/400x300/BDE0FE/333333?text=Jogo+7', title: 'Fábrica de Histórias', description: 'Combine personagens, lugares e objetos para criar histórias incríveis.', hotmartLink: 'https://pay.hotmart.com/SEU_LINK_AQUI', clicks: 180 },
+            { image: 'https://placehold.co/400x300/A2D2FF/333333?text=Jogo+8', title: 'Caça ao Tesouro Geométrico', description: 'Encontre formas geométricas escondidas e aprenda seus nomes e propriedades.', hotmartLink: 'https://pay.hotmart.com/SEU_LINK_AQUI', clicks: 75 },
+            { image: 'https://placehold.co/400x300/FFC0CB/333333?text=Jogo+9', title: 'Jogo da Memória Corporal', description: 'Imite as poses e desenvolva a memória e a coordenação motora.', hotmartLink: 'https://pay.hotmart.com/SEU_LINK_AQUI', clicks: 250 },
+            { image: 'https://placehold.co/400x300/CDB4DB/333333?text=Jogo+10', title: 'Diário das Emoções', description: 'Uma ferramenta para ajudar a criança a expressar e entender o que sente.', hotmartLink: 'https://pay.hotmart.com/SEU_LINK_AQUI', clicks: 110 },
+            { image: 'https://i.postimg.cc/wjs04KMw/SABER-BRINCANDO-3.png', title: 'Mercadinho Divertido', description: 'Brinque de fazer compras e aprenda sobre dinheiro e contas simples.', hotmartLink: 'https://pay.hotmart.com/SEU_LINK_AQUI', clicks: 280 },
+            { image: 'https://placehold.co/400x300/FFAFCC/333333?text=Jogo+12', title: 'Detetive Ortográfico', description: 'Encontre os erros de português e torne-se um mestre da ortografia.', hotmartLink: 'https://pay.hotmart.com/SEU_LINK_AQUI', clicks: 190 }
+        ];
+        
+        const productList = document.getElementById('product-list');
+        const paginationControls = document.getElementById('pagination-controls');
+        let currentPage = 1;
+        const itemsPerPage = 10; 
+        productsData.sort((a, b) => b.clicks - a.clicks);
+
+        // --- LÓGICA DO GEMINI API ---
+        const callGemini = async (prompt) => {
+            const apiKey = ""; // Deixe em branco, será fornecido pelo ambiente
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+            
+            const payload = {
+                contents: [{ role: "user", parts: [{ text: prompt }] }]
+            };
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Erro na API: ${response.statusText}`);
+                }
+
+                const result = await response.json();
+                
+                if (result.candidates && result.candidates.length > 0) {
+                    return result.candidates[0].content.parts[0].text;
+                } else {
+                    return "Não foi possível gerar ideias no momento. Tente novamente mais tarde.";
+                }
+            } catch (error) {
+                console.error("Erro ao chamar a API Gemini:", error);
+                return "Ocorreu um erro de conexão. Verifique sua internet e tente novamente.";
+            }
+        };
+
+        function displayProducts(page, items) {
+            productList.innerHTML = '';
+            page--; 
+            const start = itemsPerPage * page;
+            const end = start + itemsPerPage;
+            const paginatedItems = items.slice(start, end);
+            paginatedItems.forEach(product => {
+                const productCard = `
+                    <div class="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col transform hover:scale-105 transition-transform duration-300">
+                        <img src="${product.image}" alt="[Imagem de ${product.title}]" class="w-full h-48 object-cover" onerror="this.onerror=null;this.src='https://placehold.co/400x300/e2e8f0/4a5568?text=Imagem+Indispon%C3%ADvel';">
+                        <div class="p-6 flex flex-col flex-grow">
+                            <h3 class="text-xl font-bold mb-2">${product.title}</h3>
+                            <p class="text-gray-600 flex-grow mb-4">${product.description}</p>
+                            <div class="flex flex-col gap-2 mt-auto">
+                                <a href="${product.hotmartLink}" target="_blank" class="w-full text-center btn-primary font-bold rounded-full py-3 px-6">Comprar Agora</a>
+                                <button class="w-full text-center btn-secondary font-bold rounded-full py-3 px-6 generate-ideas-btn" data-title="${product.title}" data-description="${product.description}">✨ Gerar Ideias</button>
+                            </div>
+                        </div>
+                    </div>`;
+                productList.innerHTML += productCard;
+            });
+
+            document.querySelectorAll('.generate-ideas-btn').forEach(button => {
+                button.addEventListener('click', handleGenerateIdeas);
+            });
+        }
+        
+        const modal = document.getElementById('ideas-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalBody = document.getElementById('modal-body');
+        const modalCloseBtn = document.getElementById('modal-close-btn');
+
+        const showModal = () => modal.classList.add('visible');
+        const hideModal = () => modal.classList.remove('visible');
+
+        modalCloseBtn.addEventListener('click', hideModal);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                hideModal();
+            }
+        });
+
+        async function handleGenerateIdeas(event) {
+            const title = event.target.dataset.title;
+            const description = event.target.dataset.description;
+            
+            modalTitle.innerText = `Ideias para "${title}"`;
+            modalBody.innerHTML = '<div class="loader"></div><p class="text-center text-gray-500">Gerando atividades criativas...</p>';
+            showModal();
+
+            const prompt = `Você é um pedagogo especialista em atividades lúdicas. Para um jogo em PDF chamado '${title}', descrito como '${description}', crie 3 ideias de atividades extras e criativas para fazer com crianças. Apresente como uma lista de tópicos simples, usando um emoji em cada item. Seja breve e direto.`;
+            
+            const ideas = await callGemini(prompt);
+            modalBody.innerHTML = ideas.replace(/\n/g, '<br>');
+        }
+
+        const generateGameBtn = document.getElementById('generate-game-btn');
+        const gameThemeInput = document.getElementById('game-theme');
+        const gameSkillInput = document.getElementById('game-skill');
+        const gameIdeaResult = document.getElementById('game-idea-result');
+        const whatsappContainer = document.getElementById('whatsapp-cta-container');
+        const whatsappLink = document.getElementById('whatsapp-link');
+
+        generateGameBtn.addEventListener('click', async () => {
+            const theme = gameThemeInput.value.trim();
+            const skill = gameSkillInput.value.trim();
+
+            if (!theme || !skill) {
+                gameIdeaResult.innerHTML = '<p class="text-red-500 font-semibold">Por favor, preencha o tema e a habilidade.</p>';
+                gameIdeaResult.classList.remove('hidden');
+                whatsappContainer.classList.add('hidden');
+                return;
+            }
+
+            gameIdeaResult.classList.remove('hidden');
+            whatsappContainer.classList.add('hidden');
+            gameIdeaResult.innerHTML = '<div class="loader"></div><p class="text-center text-gray-500">Criando um novo conceito de jogo...</p>';
+            
+            const prompt = `Aja como um designer de jogos pedagógicos. Crie um conceito para um novo jogo de imprimir em PDF. O tema principal é '${theme}' e a habilidade a ser desenvolvida é '${skill}'. Descreva o conceito em 3 partes: '### Objetivo do Jogo:', '### Componentes Necessários:' e '### Como Jogar:'. Use uma linguagem animada e criativa, ideal para pais e professores. Use markdown para formatar os títulos.`;
+            
+            const rawConcept = await callGemini(prompt);
+            
+            if (rawConcept && !rawConcept.includes("Não foi possível")) {
+                let formattedConcept = rawConcept.replace(/### (.*?):/g, '<h4 class="text-lg font-bold text-cyan-600 mt-4 mb-2">$1:</h4>');
+                formattedConcept = formattedConcept.replace(/\*/g, '<br>• ');
+                gameIdeaResult.innerHTML = formattedConcept;
+
+                // TROQUE AQUI: Coloque seu número de WhatsApp com o código do país, sem o '+' ou '00'. Ex: 5511999998888
+                const yourWhatsappNumber = '5511999998888'; 
+                const whatsappMessage = `Olá! Gostei da ideia de jogo gerada no site:\n\n---\n\n${rawConcept}\n\n---\n\nGostaria de pedir um orçamento para transformá-la em um jogo personalizado.`;
+                whatsappLink.href = `https://wa.me/${yourWhatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
+                
+                whatsappContainer.classList.remove('hidden');
+            } else {
+                gameIdeaResult.innerHTML = `<p class="text-red-500 font-semibold">${rawConcept}</p>`;
+                whatsappContainer.classList.add('hidden');
+            }
+        });
+
+
+        function setupPagination(items) {
+            paginationControls.innerHTML = '';
+            const pageCount = Math.ceil(items.length / itemsPerPage);
+            if (pageCount <= 1) return; 
+            const changePage = (newPage) => {
+                currentPage = newPage;
+                displayProducts(currentPage, items);
+                setupPagination(items);
+                document.getElementById('jogos').scrollIntoView({ behavior: 'smooth' });
+            };
+            const prevButton = document.createElement('button');
+            prevButton.innerText = 'Anterior';
+            prevButton.classList.add('pagination-btn', 'px-4', 'py-2', 'rounded-xl', 'font-semibold', 'transition-colors', 'bg-white', 'text-gray-700', 'hover:bg-amber-100');
+            prevButton.disabled = currentPage === 1;
+            prevButton.addEventListener('click', () => changePage(currentPage - 1));
+            paginationControls.appendChild(prevButton);
+            for (let i = 1; i <= pageCount; i++) {
+                const btn = document.createElement('button');
+                btn.innerText = i;
+                btn.classList.add('pagination-btn', 'px-4', 'py-2', 'rounded-xl', 'font-semibold', 'transition-colors', 'bg-white', 'text-gray-700', 'hover:bg-amber-100');
+                if (i === currentPage) { btn.classList.add('active'); }
+                btn.addEventListener('click', () => changePage(i));
+                paginationControls.appendChild(btn);
+            }
+            const nextButton = document.createElement('button');
+            nextButton.innerText = 'Próxima';
+            nextButton.classList.add('pagination-btn', 'px-4', 'py-2', 'rounded-xl', 'font-semibold', 'transition-colors', 'bg-white', 'text-gray-700', 'hover:bg-amber-100');
+            nextButton.disabled = currentPage === pageCount;
+            nextButton.addEventListener('click', () => changePage(currentPage + 1));
+            paginationControls.appendChild(nextButton);
+        }
+        
+        displayProducts(currentPage, productsData);
+        setupPagination(productsData);
+
+        const faqData = [
+            { question: "Como vou receber o jogo?", answer: "Após a confirmação do pagamento pela Hotmart, você receberá um e-mail com o link para baixar o arquivo em formato PDF." },
+            { question: "Posso imprimir quantas vezes quiser?", answer: "Sim! O arquivo é seu. Você pode imprimir quantas vezes forem necessárias para seu uso pessoal ou em sua sala de aula." },
+            { question: "Que tipo de papel devo usar?", answer: "Recomendamos um papel de maior gramatura, como 180g, para maior durabilidade das peças do jogo. Papel fotográfico ou plastificação também são ótimas opções." },
+            { question: "O pagamento é seguro?", answer: "Totalmente. Todos os pagamentos são processados pela Hotmart, uma das maiores e mais seguras plataformas de produtos digitais do mundo." }
+        ];
+        
+        const faqContainer = document.getElementById('faq-container');
+        faqData.forEach(item => {
+            const faqItem = `<div class="border border-gray-200 rounded-2xl overflow-hidden"><button class="faq-question w-full text-left p-4 font-semibold flex justify-between items-center transition"><span>${item.question}</span><span class="faq-icon text-2xl text-amber-500 transition-transform duration-300">+</span></button><div class="faq-answer overflow-hidden max-h-0 transition-all duration-500 ease-in-out px-4"><p class="text-gray-600">${item.answer}</p></div></div>`;
+            faqContainer.innerHTML += faqItem;
+        });
+        
+        faqContainer.addEventListener('click', (e) => {
+            const question = e.target.closest('.faq-question');
+            if (question) {
+                const currentlyActive = document.querySelector('.faq-question.active');
+                if (currentlyActive && currentlyActive !== question) {
+                    currentlyActive.classList.remove('active');
+                }
+                question.classList.toggle('active');
+            }
+        });
+
+        // LÓGICA DAS ABAS
+        const tabs = document.querySelectorAll('.tab-button');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const target = tab.getAttribute('data-tab');
+
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+
+                tabContents.forEach(content => {
+                    if (content.id === target) {
+                        content.classList.remove('hidden');
+                    } else {
+                        content.classList.add('hidden');
+                    }
+                });
+            });
+        });
+    });
+    </script>
+</body>
+</html>

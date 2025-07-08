@@ -125,7 +125,7 @@
                     <img src="https://i.postimg.cc/wjs04KMw/SABER-BRINCANDO-3.png" alt="[Logo do Saber Brincando]" class="h-32 w-32 md:h-40 md:w-40 rounded-full shadow-lg mb-6">
                     <h1 class="text-4xl md:text-6xl font-bold text-gray-800 leading-tight">Aprender nunca foi tão divertido!</h1>
                     <p class="mt-4 text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">Jogos pedagógicos criativos e eficazes da <span class="font-bold">Saber Brincando</span>, prontos para imprimir e transformar o aprendizado.</p>
-                    <a href="#jogos" class="mt-8 inline-block btn-primary font-bold rounded-full py-4 px-10 text-lg">Ver os Jogos</a>
+                    <a href="#jogos" class="mt-8 inline-block btn-primary font-bold rounded-full py-4 px-10 text-lg uppercase">Ver os Jogos</a>
                 </div>
             </header>
 
@@ -160,10 +160,10 @@
                 <section class="mb-20">
                     <div class="mb-8 p-2 bg-gray-100 rounded-xl max-w-lg mx-auto">
                         <nav class="flex justify-center space-x-1" aria-label="Tabs">
-                            <button class="tab-button active flex-1 text-center" data-tab="vantagens">Vantagens</button>
-                            <button class="tab-button flex-1 text-center" data-tab="clientes">Clientes</button>
-                            <button class="tab-button flex-1 text-center" data-tab="quemsomos">Quem Somos</button>
-                            <button class="tab-button flex-1 text-center" data-tab="duvidas">Dúvidas</button>
+                            <button class="tab-button active flex-1 text-center uppercase" data-tab="vantagens">Vantagens</button>
+                            <button class="tab-button flex-1 text-center uppercase" data-tab="clientes">Clientes</button>
+                            <button class="tab-button flex-1 text-center uppercase" data-tab="quemsomos">Quem Somos</button>
+                            <button class="tab-button flex-1 text-center uppercase" data-tab="duvidas">Dúvidas</button>
                         </nav>
                     </div>
                     <div class="bg-white p-6 sm:p-10 rounded-2xl shadow-lg">
@@ -208,7 +208,7 @@
         <div class="container mx-auto px-6 py-10 text-center">
             <h2 class="text-3xl font-bold">Pronto para começar a diversão?</h2>
             <p class="mt-2">Escolha seu jogo e transforme o aprendizado hoje mesmo!</p>
-            <a href="#jogos" class="mt-6 inline-block btn-primary font-bold rounded-full py-4 px-10 text-lg">Quero meu Jogo Agora!</a>
+            <a href="#jogos" class="mt-6 inline-block btn-primary font-bold rounded-full py-4 px-10 text-lg uppercase">Quero meu Jogo Agora!</a>
             <p class="mt-8 text-sm text-gray-400">&copy; 2025 Saber Brincando. Todos os direitos reservados.</p>
         </div>
     </footer>
@@ -220,13 +220,25 @@
             {
                 id: 1, 
                 images: [
-                    'https://i.postimg.cc/0NCy27K8/20250706-2019-Jogo-das-Emo-es-remix-01jzh0fmatf0g8h3vgk058csgg.png',
+                    'https://i.postimg.cc/SRhrL029/Design-sem-nome.png',
                     'https://i.postimg.cc/4xHTSVQ8/imagens-internas-site-1.png'
                 ],
                 title: 'Jogo das Emoções',
                 description: 'Inclui 14 cartas: 7 de meninos e 7 de meninas, para ajudar as crianças a identificar e nomear sentimentos de forma divertida.',
                 price: 'R$ 4,00',
                 hotmartLink: 'https://pay.hotmart.com/R100681962P',
+                clicks: 150
+            },
+             {
+                id: 2, 
+                images: [
+                    'https://i.postimg.cc/Hn3BzZNr/039-F-BRICA-DE-MONSTROS.png',
+                    'https://i.postimg.cc/T3KCjcJP/3.png'
+                ],
+                title: 'Fábrica de Monstros',
+                description: 'Role o dado e monste seu monstrinho',
+                price: 'R$ 4,00',
+                hotmartLink: 'https://pay.hotmart.com/L100683073Q',
                 clicks: 150
             },
         ];
@@ -247,18 +259,17 @@
             const end = start + itemsPerPage;
             const paginatedItems = items.slice(start, end);
             paginatedItems.forEach((product) => {
-                const uniqueId = `product-card-${product.id}`;
                 const productCard = `
                     <div class="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col transform hover:scale-105 transition-transform duration-300">
                         <a href="#product-${product.id}" class="image-container block">
                             <div class="aspect-ratio-3-2">
-                                <img id="img-${uniqueId}" src="${product.images[0]}" alt="[Imagem de ${product.title}]" class="object-cover">
+                                <img src="${product.images[0]}" alt="[Imagem de ${product.title}]" class="object-cover">
                             </div>
                             <div class="price-tag">${product.price}</div>
                         </a>
                         <div class="p-6 flex flex-col flex-grow">
                             <h3 class="text-xl font-bold mb-2">${product.title}</h3>
-                            <a href="#product-${product.id}" class="mt-auto w-full text-center btn-primary font-bold rounded-full py-3 px-6">Ver Jogo</a>
+                            <a href="#product-${product.id}" class="mt-auto w-full text-center btn-primary font-bold rounded-full py-3 px-6 uppercase">Ver Jogo</a>
                         </div>
                     </div>`;
                 productList.innerHTML += productCard;
@@ -276,8 +287,8 @@
                 document.getElementById('jogos').scrollIntoView({ behavior: 'smooth' });
             };
             const prevButton = document.createElement('button');
-            prevButton.innerText = 'Anterior';
-            prevButton.classList.add('pagination-btn', 'px-4', 'py-2', 'rounded-xl', 'font-semibold', 'transition-colors', 'bg-white', 'text-gray-700', 'hover:bg-amber-100');
+            prevButton.innerText = 'ANTERIOR';
+            prevButton.classList.add('pagination-btn', 'px-4', 'py-2', 'rounded-xl', 'font-semibold', 'transition-colors', 'bg-white', 'text-gray-700', 'hover:bg-amber-100', 'uppercase');
             prevButton.disabled = currentPage === 1;
             prevButton.addEventListener('click', () => changePage(currentPage - 1));
             paginationControls.appendChild(prevButton);
@@ -290,8 +301,8 @@
                 paginationControls.appendChild(btn);
             }
             const nextButton = document.createElement('button');
-            nextButton.innerText = 'Próxima';
-            nextButton.classList.add('pagination-btn', 'px-4', 'py-2', 'rounded-xl', 'font-semibold', 'transition-colors', 'bg-white', 'text-gray-700', 'hover:bg-amber-100');
+            nextButton.innerText = 'PRÓXIMA';
+            nextButton.classList.add('pagination-btn', 'px-4', 'py-2', 'rounded-xl', 'font-semibold', 'transition-colors', 'bg-white', 'text-gray-700', 'hover:bg-amber-100', 'uppercase');
             nextButton.disabled = currentPage === pageCount;
             nextButton.addEventListener('click', () => changePage(currentPage + 1));
             paginationControls.appendChild(nextButton);
@@ -371,7 +382,7 @@
                         <p class="text-xl text-gray-600 text-center mb-10">${product.description}</p>
                         
                         <div class="text-center mb-12">
-                             <a href="${product.hotmartLink}" target="_blank" class="btn-primary font-bold rounded-full py-4 px-12 text-xl inline-block shadow-lg transform hover:scale-105 transition-transform">
+                             <a href="${product.hotmartLink}" target="_blank" class="btn-primary font-bold rounded-full py-4 px-12 text-xl inline-block shadow-lg transform hover:scale-105 transition-transform uppercase">
                                 Comprar por ${product.price}
                             </a>
                         </div>

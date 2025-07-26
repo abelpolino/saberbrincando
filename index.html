@@ -37,14 +37,6 @@
             transform: translateY(-2px);
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
-        .faq-question.active + .faq-answer {
-            max-height: 200px;
-            padding-top: 1rem;
-            padding-bottom: 1rem;
-        }
-        .faq-question.active .faq-icon {
-            transform: rotate(45deg);
-        }
         .pagination-btn {
             border: 1px solid #ddd;
         }
@@ -60,25 +52,6 @@
         }
         #jogos {
             scroll-margin-top: 4rem;
-        }
-        .tab-button {
-            padding: 0.75rem 1.25rem;
-            font-weight: 600;
-            color: #4b5563;
-            border-radius: 0.75rem;
-            transition: all 0.3s ease-in-out;
-            background-color: transparent;
-            border: none;
-        }
-        .tab-button:hover {
-            background-color: #e5e7eb;
-        }
-        /* COR HARMONIZADA: Aba ativa com o azul do logo */
-        .tab-button.active {
-            background-color: #12b3e4;
-            color: white;
-            box-shadow: 0 4px 12px -1px rgba(18, 179, 228, 0.4);
-            transform: translateY(-2px);
         }
         /* Estilos para galeria de imagens e preço */
         .image-container {
@@ -98,7 +71,6 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.2);
             z-index: 10;
         }
-        /* NOVO: Classe para forçar a proporção 3:2 da imagem */
         .aspect-ratio-3-2 {
             position: relative;
             width: 100%;
@@ -111,6 +83,15 @@
             width: 100%;
             height: 100%;
             object-fit: cover; /* Garante que a imagem cubra o espaço sem distorcer */
+        }
+        /* Estilos do Acordeão */
+        .accordion-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+        }
+        .accordion-question.active .accordion-icon {
+            transform: rotate(45deg);
         }
     </style>
 </head>
@@ -157,42 +138,63 @@
                     <div id="pagination-controls" class="flex justify-center items-center mt-12 space-x-2"></div>
                 </section>
 
-                <section class="mb-16 sm:mb-20">
-                    <div class="mb-8 p-2 bg-gray-100 rounded-xl max-w-lg mx-auto">
-                        <nav class="flex flex-wrap justify-center gap-2" aria-label="Tabs">
-                            <button class="tab-button active text-center uppercase" data-tab="vantagens">Vantagens</button>
-                            <button class="tab-button text-center uppercase" data-tab="clientes">Clientes</button>
-                            <button class="tab-button text-center uppercase" data-tab="quemsomos">Quem Somos</button>
-                            <button class="tab-button text-center uppercase" data-tab="duvidas">Dúvidas</button>
-                        </nav>
+                <!-- NOVA ESTRUTURA DE ACORDEÃO -->
+                <section id="info-accordion" class="max-w-4xl mx-auto mb-16 sm:mb-20 space-y-4">
+                    <!-- Item Vantagens -->
+                    <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                        <button class="accordion-question w-full p-6 text-left text-2xl font-bold flex justify-between items-center">
+                            <span>Vantagens dos Nossos Jogos</span>
+                            <span class="accordion-icon text-3xl text-blue-500 transition-transform duration-300">+</span>
+                        </button>
+                        <div class="accordion-answer">
+                            <div class="px-6 pb-6">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                    <div class="flex items-start"><span class="text-3xl mr-4">💡</span><div><h3 class="font-bold text-lg">Estimula o Raciocínio</h3><p class="text-gray-600">Desafios que desenvolvem a lógica e a resolução de problemas.</p></div></div>
+                                    <div class="flex items-start"><span class="text-3xl mr-4">🎨</span><div><h3 class="font-bold text-lg">Desenvolve a Criatividade</h3><p class="text-gray-600">Atividades que incentivam a imaginação e a expressão.</p></div></div>
+                                    <div class="flex items-start"><span class="text-3xl mr-4">🖨️</span><div><h3 class="font-bold text-lg">Acesso Imediato</h3><p class="text-gray-600">Compre e receba na hora, sem frete e sem espera.</p></div></div>
+                                    <div class="flex items-start"><span class="text-3xl mr-4">👨‍👩‍👧</span><div><h3 class="font-bold text-lg">Fortalece Vínculos</h3><p class="text-gray-600">Uma ótima oportunidade para momentos de qualidade em família.</p></div></div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="bg-white p-6 sm:p-10 rounded-2xl shadow-lg">
-                        <div id="vantagens" class="tab-content">
-                            <h2 class="text-3xl font-bold text-center mb-10">Vantagens dos Nossos Jogos</h2>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-                                <div class="flex items-start"><span class="text-3xl mr-4">💡</span><div><h3 class="font-bold text-lg">Estimula o Raciocínio</h3><p class="text-gray-600">Desafios que desenvolvem a lógica e a resolução de problemas.</p></div></div>
-                                <div class="flex items-start"><span class="text-3xl mr-4">🎨</span><div><h3 class="font-bold text-lg">Desenvolve a Criatividade</h3><p class="text-gray-600">Atividades que incentivam a imaginação e a expressão.</p></div></div>
-                                <div class="flex items-start"><span class="text-3xl mr-4">🖨️</span><div><h3 class="font-bold text-lg">Acesso Imediato</h3><p class="text-gray-600">Compre e receba na hora, sem frete e sem espera.</p></div></div>
-                                <div class="flex items-start"><span class="text-3xl mr-4">👨‍👩‍👧</span><div><h3 class="font-bold text-lg">Fortalece Vínculos</h3><p class="text-gray-600">Uma ótima oportunidade para momentos de qualidade em família.</p></div></div>
+                    <!-- Item Clientes -->
+                    <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                        <button class="accordion-question w-full p-6 text-left text-2xl font-bold flex justify-between items-center">
+                            <span>O que dizem nossos clientes?</span>
+                            <span class="accordion-icon text-3xl text-blue-500 transition-transform duration-300">+</span>
+                        </button>
+                        <div class="accordion-answer">
+                            <div class="px-6 pb-6">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                    <div class="bg-gray-50 p-6 rounded-2xl border-l-4 border-red-400"><p class="text-gray-600 italic">"Meus filhos amaram os jogos interativos. É uma ótima opção para manter eles fora das telas por horas, explorando o senso criativo, desenvolvendo a autonomia, fortalecendo o aspecto cognitivo com um material de qualidade, pedagogicamente muito bem elaborado para cada idade."</p><p class="font-bold text-right mt-4">- Bruna P., Mãe da Olívia, 4 anos e do Otávio, 11 anos</p></div>
+                                    <div class="bg-gray-50 p-6 rounded-2xl border-l-4 border-red-400"><p class="text-gray-600 italic">"Material lindo, organizado e muito bem estruturado"</p><p class="font-bold text-right mt-4">- Danieli F., Professora da sala de AEE</p></div>
+                                </div>
                             </div>
                         </div>
-                        <div id="clientes" class="tab-content hidden">
-                            <h2 class="text-3xl font-bold text-center mb-10">O que dizem nossos clientes?</h2>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                                <div class="bg-gray-50 p-6 rounded-2xl border-l-4 border-red-400"><p class="text-gray-600 italic">"Meus filhos amaram os jogos interativos. É uma ótima opção para manter eles fora das telas por horas, explorando o senso criativo, desenvolvendo a autonomia, fortalecendo o aspecto cognitivo com um material de qualidade, pedagogicamente muito bem elaborado para cada idade."</p><p class="font-bold text-right mt-4">- Bruna P., Mãe da Olívia, 4 anos e do Otávio, 11 anos</p></div>
-                                <div class="bg-gray-50 p-6 rounded-2xl border-l-4 border-red-400"><p class="text-gray-600 italic">"Material lindo, organizado e muito bem estruturado"</p><p class="font-bold text-right mt-4">- Danieli F., Professora da sala de AEE</p></div>
+                    </div>
+                    <!-- Item Quem Somos -->
+                    <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                        <button class="accordion-question w-full p-6 text-left text-2xl font-bold flex justify-between items-center">
+                            <span>Quem Somos</span>
+                            <span class="accordion-icon text-3xl text-blue-500 transition-transform duration-300">+</span>
+                        </button>
+                        <div class="accordion-answer">
+                            <div class="px-6 pb-6">
+                                <div class="flex flex-col md:flex-row items-center justify-center gap-10">
+                                    <img src="https://i.postimg.cc/mr9pkPH3/qs.jpg" alt="[Foto dos idealizadores do Saber Brincando]" class="w-48 h-48 md:w-64 md:h-64 rounded-full object-cover shadow-xl">
+                                    <div class="md:w-1/2 text-center md:text-left"><p class="text-gray-600 text-lg leading-relaxed">Olá! Somos <span class="font-bold">Abel e Andressa</span>, os criadores por trás do Saber Brincando. Um cara do TI e uma pedagoga, nossa paixão é criar ferramentas que tornam o aprendizado uma jornada divertida e eficaz. Cada jogo é desenvolvido com muito carinho e cuidado, pensando em fortalecer os laços familiares e despertar a curiosidade das crianças no ambiente escolar. Acreditamos que a melhor forma de aprender é, e sempre será, brincando!</p></div>
+                                </div>
                             </div>
                         </div>
-                        <div id="quemsomos" class="tab-content hidden">
-                            <h2 class="text-3xl font-bold text-center mb-10">Quem Somos</h2>
-                            <div class="flex flex-col md:flex-row items-center justify-center gap-10">
-                                <img src="https://i.postimg.cc/mr9pkPH3/qs.jpg" alt="[Foto dos idealizadores do Saber Brincando]" class="w-48 h-48 md:w-64 md:h-64 rounded-full object-cover shadow-xl">
-                                <div class="md:w-1/2 text-center md:text-left"><p class="text-gray-600 text-lg leading-relaxed">Olá! Somos <span class="font-bold">Abel e Andressa</span>, os criadores por trás do Saber Brincando. Um cara do TI e uma pedagoga, nossa paixão é criar ferramentas que tornam o aprendizado uma jornada divertida e eficaz. Cada jogo é desenvolvido com muito carinho e cuidado, pensando em fortalecer os laços familiares e despertar a curiosidade das crianças no ambiente escolar. Acreditamos que a melhor forma de aprender é, e sempre será, brincando!</p></div>
-                            </div>
-                        </div>
-                        <div id="duvidas" class="tab-content hidden">
-                            <h2 class="text-3xl font-bold text-center mb-10">Dúvidas Frequentes</h2>
-                            <div id="faq-container" class="space-y-4 max-w-3xl mx-auto"></div>
+                    </div>
+                    <!-- Item Dúvidas Frequentes -->
+                    <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                        <button class="accordion-question w-full p-6 text-left text-2xl font-bold flex justify-between items-center">
+                            <span>Dúvidas Frequentes</span>
+                            <span class="accordion-icon text-3xl text-blue-500 transition-transform duration-300">+</span>
+                        </button>
+                        <div class="accordion-answer">
+                            <div id="faq-container" class="px-6 pb-6 space-y-4"></div>
                         </div>
                     </div>
                 </section>
@@ -329,7 +331,7 @@
                 hotmartLink: 'https://pay.hotmart.com/P100913084J',
                 clicks: 150
             },
-         {
+           {
                 id: 8, 
                 images: [
                     'https://i.postimg.cc/7PVhck94/8-de-olho-nos-espa-os-capa-06.png',
@@ -341,7 +343,7 @@
                 hotmartLink: 'https://pay.hotmart.com/B100913416G',
                 clicks: 150
             },
-         {
+           {
                 id: 9, 
                 images: [
                     'https://i.postimg.cc/ZKpsJChY/10-preencha-a-forma-capa-5.png',
@@ -353,7 +355,7 @@
                 hotmartLink: 'https://pay.hotmart.com/U100921245X',
                 clicks: 150
             },
-         {
+           {
                 id: 10, 
                 images: [
                     'https://i.postimg.cc/XqTqVsdJ/9-alfabeto-tracejado-capa-10.png',
@@ -413,7 +415,7 @@
                 hotmartLink: 'https://pay.hotmart.com/U100984245N',
                 clicks: 150
             },
-         {
+           {
                 id: 15, 
                 images: [
                     'https://i.postimg.cc/NMb2wQWK/15-monte-seu-look-capa-07.png',
@@ -449,7 +451,7 @@
                 hotmartLink: 'inserir link aqui',
                 clicks: 150
             },
-          {
+           {
                 id: 18, 
                 images: [
                     'https://i.postimg.cc/sXmwC2P1/18-jogo-da-mem-ria-animais-das-vogais-capa-04.png',
@@ -566,7 +568,7 @@
         const productList = document.getElementById('product-list');
         const paginationControls = document.getElementById('pagination-controls');
         let currentPage = 1;
-        const itemsPerPage = 10; 
+        const itemsPerPage = 9; 
         productsData.sort((a, b) => b.clicks - a.clicks);
 
         function displayProducts(page, items) {
@@ -634,35 +636,34 @@
         
         const faqContainer = document.getElementById('faq-container');
         faqData.forEach(item => {
-            const faqItem = `<div class="border border-gray-200 rounded-2xl overflow-hidden"><button class="faq-question w-full text-left p-4 font-semibold flex justify-between items-center transition"><span>${item.question}</span><span class="faq-icon text-2xl text-blue-500 transition-transform duration-300">+</span></button><div class="faq-answer overflow-hidden max-h-0 transition-all duration-500 ease-in-out px-4"><p class="text-gray-600">${item.answer}</p></div></div>`;
+            const faqItem = `<div class="border border-gray-200 rounded-2xl overflow-hidden"><button class="accordion-question w-full text-left p-4 font-semibold flex justify-between items-center transition"><span>${item.question}</span><span class="accordion-icon text-2xl text-blue-500 transition-transform duration-300">+</span></button><div class="accordion-answer overflow-hidden max-h-0 transition-all duration-500 ease-in-out px-4"><p class="text-gray-600">${item.answer}</p></div></div>`;
             faqContainer.innerHTML += faqItem;
         });
         
-        faqContainer.addEventListener('click', (e) => {
-            const question = e.target.closest('.faq-question');
-            if (question) {
-                const currentlyActive = document.querySelector('.faq-question.active');
-                if (currentlyActive && currentlyActive !== question) {
-                    currentlyActive.classList.remove('active');
+        // --- LÓGICA DO ACORDEÃO ---
+        const accordionContainer = document.getElementById('info-accordion');
+        if (accordionContainer) {
+            accordionContainer.addEventListener('click', (e) => {
+                const question = e.target.closest('.accordion-question');
+                if (question) {
+                    const answer = question.nextElementSibling;
+                    const icon = question.querySelector('.accordion-icon');
+                    
+                    const isActive = question.classList.contains('active');
+
+                    if (!isActive) {
+                        question.classList.add('active');
+                        answer.style.maxHeight = answer.scrollHeight + "px";
+                        icon.style.transform = 'rotate(45deg)';
+                    } else {
+                        question.classList.remove('active');
+                        answer.style.maxHeight = null;
+                        icon.style.transform = '';
+                    }
                 }
-                question.classList.toggle('active');
-            }
-        });
-
-        const tabs = document.querySelectorAll('.tab-button');
-        const tabContents = document.querySelectorAll('.tab-content');
-
-        tabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                const target = tab.getAttribute('data-tab');
-                tabs.forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
-                tabContents.forEach(content => {
-                    content.id === target ? content.classList.remove('hidden') : content.classList.add('hidden');
-                });
             });
-        });
-
+        }
+        
         // --- LÓGICA DE NAVEGAÇÃO / ROTEAMENTO ---
         function renderProductDetail(productId) {
             const product = productsData.find(p => p.id === productId);

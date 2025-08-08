@@ -277,7 +277,6 @@
             </section>`;
     };
     
-    // **ATUALIZAÇÃO**: Componente do acordeão com novo estilo e estrutura
     const InfoAccordionComponent = () => {
         const faqItems = faqData.map(item => `
             <div class="bg-white border border-gray-200 rounded-lg overflow-hidden">
@@ -342,7 +341,7 @@
                     </div>
                 </div>
                 <!-- Dúvidas Frequentes -->
-                <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                <div id="faq-accordion-item" class="bg-white rounded-2xl shadow-lg overflow-hidden">
                     <button class="accordion-question w-full p-6 text-left text-2xl font-bold flex justify-between items-center">
                         <span>Dúvidas Frequentes</span>
                         <span class="accordion-icon text-3xl text-blue-500 transition-transform duration-300">+</span>
@@ -449,9 +448,7 @@
         paginationContainer.innerHTML = PaginationComponent();
     }
 
-    // **ATUALIZAÇÃO**: Lógica do acordeão corrigida e centralizada
     function attachEventListeners() {
-        // Eventos delegados a partir do elemento raiz para funcionarem em todas as páginas
         root.addEventListener('click', (e) => {
             // Lógica do Acordeão
             const question = e.target.closest('.accordion-question');
@@ -462,11 +459,14 @@
                 const isActive = question.classList.toggle('active');
                 answer.style.maxHeight = isActive ? answer.scrollHeight + 'px' : null;
 
-                const parentAccordionAnswer = question.closest('#info-accordion > div > .accordion-answer');
-                if (parentAccordionAnswer && parentAccordionAnswer.style.maxHeight) {
+                // **CORREÇÃO**: Verifica se o acordeão clicado está dentro de outro acordeão (como o FAQ)
+                // e ajusta a altura do pai para que o conteúdo não seja cortado.
+                const parentAnswer = question.closest('#faq-accordion-item > .accordion-answer');
+                if (parentAnswer && parentAnswer.style.maxHeight) {
+                    // Atraso para esperar a animação do filho terminar
                     setTimeout(() => {
-                        parentAccordionAnswer.style.maxHeight = parentAccordionAnswer.scrollHeight + 'px';
-                    }, 300);
+                        parentAnswer.style.maxHeight = parentAnswer.scrollHeight + 'px';
+                    }, 510); 
                 }
             }
 
@@ -483,7 +483,6 @@
             }
         });
 
-        // Evento da Barra de Busca (precisa ser anexado após a renderização da página principal)
         const searchInput = document.getElementById('search-input');
         if (searchInput) {
             searchInput.addEventListener('input', (e) => {

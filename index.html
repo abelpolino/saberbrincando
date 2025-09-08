@@ -66,14 +66,6 @@
         .accordion-question.active .accordion-icon {
             transform: rotate(45deg);
         }
-        @keyframes pulse-slow {
-          50% {
-            opacity: .90;
-          }
-        }
-        .animate-pulse-slow {
-          animation: pulse-slow 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
     </style>
 </head>
 <body>
@@ -158,7 +150,6 @@
         { id: 69, position: 3, images: ['https://i.postimg.cc/1Xs2hmdw/69-crie-um-rosto-2-capa-06.png', 'https://i.postimg.cc/MH54Wkk4/69-crie-um-rosto-2-interno.png'], title: 'Crie um Rosto', description: 'Artistas, ao Trabalho! Novos Personagens Esperam por um Rosto!', price: 'R$ 6,00', hotmartLink: 'https://pay.hotmart.com/H101243344A' },
         { id: 70, position: 2, images: ['https://i.postimg.cc/pr3j5rtn/70-monte-seu-sorvete-capa-04.png', 'https://i.postimg.cc/QNz1y4Wx/70-monte-seu-sorvete-interno.png'], title: 'Monte Seu Sorvete', description: 'Mestres Sorveteiros: Sigam a Receita Secreta!', price: 'R$ 4,00', hotmartLink: 'https://pay.hotmart.com/P101243456I' },
         { id: 77, position: 12, images: ['https://i.postimg.cc/HL4CdPt5/77-quebra-cabe-a-para-colorir-capa-gr-tis.png', 'https://i.postimg.cc/Y9rB9fXP/77-quebra-cabe-a-para-colorir-interno.png'], title: 'Quebra-Cabeça Para Colorir', description: 'Dê Cor aos Bichinhos e Depois Junte as Metades!', price: 'R$0,00', hotmartLink: 'https://drive.google.com/file/d/1wbdhFp_y8Hru1tQubSIzBJIuMWAbzVtR/view?usp=drive_link' },
-        { id: 71, position: 71, featured: true, images: ['https://i.postimg.cc/J4D91d7x/PROMO-O-CAPA.png', 'https://i.postimg.cc/YSn52cFX/INTERNA-PROMO.png'], title: 'Kit PROMOCIONAL', description: 'Todos os jogos do site por apenas R$29,90 à vista, são 68 jogos com diversas propostas. (Jogos gratuitos não inclusos)', price: 'R$ 29,90', hotmartLink: 'https://pay.hotmart.com/U101724592F' },
     ];
 
     const faqData = [
@@ -177,6 +168,7 @@
         searchTerm: '',
         get filteredProducts() {
             const allProducts = [...productsData]
+                // **ATUALIZAÇÃO**: A ordenação agora é feita pela propriedade "position".
                 .sort((a, b) => a.position - b.position) 
                 .filter(p => p.hotmartLink || p.price === 'R$0,00');
 
@@ -232,46 +224,6 @@
                 </div>
             </div>
         </section>`;
-        
-    const FeaturedProductComponent = (product) => {
-        if (!product) return '';
-
-        return `
-            <section id="destaque" class="mb-16 sm:mb-20">
-                <div class="max-w-5xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden">
-                     <div class="p-8 text-center bg-gradient-to-r from-red-500 via-red-600 to-red-700 text-white rounded-t-2xl shadow-lg animate-pulse-slow">
-                        <h2 class="text-5xl font-extrabold uppercase tracking-wider" style="text-shadow: 3px 3px 6px rgba(0,0,0,0.5);">Super Oferta</h2>
-                        <p class="text-xl mt-2 font-semibold">Somente este final de semana!</p>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-center p-4 md:p-8">
-                        <div class="p-4">
-                             <a href="#product-${product.id}" class="block group">
-                                <img class="rounded-xl shadow-2xl transform group-hover:scale-105 transition-transform duration-300 ease-in-out" src="${product.images[0]}" alt="Capa do jogo ${product.title}">
-                            </a>
-                        </div>
-                        <div class="flex flex-col justify-center text-center p-4">
-                            <h3 class="text-3xl font-bold text-gray-800 mb-3">${product.title}</h3>
-                            <p class="text-gray-600 mb-6 text-lg">${product.description}</p>
-                            <div class="my-6">
-                                <p class="text-gray-500 mb-2">A oferta acaba em:</p>
-                                <div id="countdown" class="text-3xl font-bold text-gray-800 tracking-wider space-x-2">
-                                    <span class="inline-block bg-gray-200 rounded-lg px-3 py-2"><span id="days">00</span><span class="text-sm block">dias</span></span>
-                                    <span class="inline-block bg-gray-200 rounded-lg px-3 py-2"><span id="hours">00</span><span class="text-sm block">horas</span></span>
-                                    <span class="inline-block bg-gray-200 rounded-lg px-3 py-2"><span id="minutes">00</span><span class="text-sm block">min</span></span>
-                                    <span class="inline-block bg-gray-200 rounded-lg px-3 py-2"><span id="seconds">00</span><span class="text-sm block">seg</span></span>
-                                </div>
-                            </div>
-                            <div class="mt-auto">
-                                <a href="${product.hotmartLink}" target="_blank" class="w-full md:w-auto text-center inline-block btn-primary font-bold rounded-full py-4 px-10 text-lg uppercase shadow-lg transform hover:scale-105 transition-transform">
-                                    Comprar por ${product.price}
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        `;
-    };
 
     const ProductCardComponent = (product) => `
         <div class="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col transform hover:scale-105 transition-transform duration-300">
@@ -413,7 +365,7 @@
                 <p class="text-gray-600 mb-8 max-w-2xl mx-auto">Tem alguma dúvida ou sugestão? Adoramos conversar! Entre em contato pelos nossos canais:</p>
                 <div class="flex justify-center items-center space-x-6 md:space-x-10">
                     <a href="https://instagram.com/saberbrincandorg" target="_blank" class="text-gray-600 hover:text-blue-500 transition-colors">
-                        <svg class="w-10 h-10" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 012.153 1.153 4.902 4.902 0 011.153 2.153c.247.636.416 1.363.465 2.427.048 1.024.06 1.378.06 3.808s-.012 2.784-.06 3.808c-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 2.153 4.902 4.902 0 01-2.153 1.153c-.636.247-1.363.416-2.427.465-1.024.048-1.378.06-3.808.06s-2.784-.012-3.808-.06c-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-2.153-1.153 4.902 4.902 0 01-1.153-2.153c-.247-.636-.416-1.363-.465-2.427-.048-1.024-.06-1.378-.06-3.808s.012-2.784.06-3.808c.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-2.153A4.902 4.902 0 016.08 2.525c.636-.247 1.363-.416 2.427-.465C9.53 2.013 9.884 2 12.315 2zm0 2.163c-2.403 0-2.729.01-3.686.06-1.003.045-1.505.2-1.897.37-.473.193-.84.42-1.164.745-.324.325-.552.69-.745 1.164-.17.392-.325.894-.37 1.897-.05 1.002-.06 1.336-.06 3.686s.01 2.684.06 3.686c.045 1.003.2 1.505.37 1.897.193.473.42.84.745 1.164.325.324.69.552 1.164.745.392.17.894.325 1.897.37 1.002.05 1.336.06 3.686.06s2.684-.01 3.686-.06c1.003-.045 1.505-.2 1.897-.37.473-.193.84-.42 1.164-.745.324-.325.552-.69.745-1.164.17-.392.325-.894-.37-1.897.05-1.002.06-1.336.06-3.686s-.01-2.684-.06-3.686c-.045-1.003-.2-1.505-.37-1.897-.193-.473-.42-.84-.745-1.164-.325-.324-.69-.552-1.164-.745-.392-.17-.894-.325-1.897-.37-1.002-.05-1.336-.06-3.686-.06zm0 12.943c-3.556 0-6.434-2.878-6.434-6.434s2.878-6.434 6.434-6.434 6.434 2.878 6.434 6.434-2.878 6.434-6.434 6.434zm0-10.845c-2.43 0-4.402 1.972-4.402 4.402s1.972 4.402 4.402 4.402 4.402-1.972 4.402-4.402-1.972-4.402-4.402-4.402zM18.82 7.01c.826 0 1.5-.674 1.5-1.5s-.674-1.5-1.5-1.5-1.5.674-1.5 1.5.674 1.5 1.5 1.5z" clip-rule="evenodd" /></svg>
+                        <svg class="w-10 h-10" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 012.153 1.153 4.902 4.902 0 011.153 2.153c.247.636.416 1.363.465 2.427.048 1.024.06 1.378.06 3.808s-.012 2.784-.06 3.808c-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 2.153 4.902 4.902 0 01-2.153 1.153c-.636.247-1.363.416-2.427.465-1.024.048-1.378.06-3.808.06s-2.784-.012-3.808-.06c-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-2.153-1.153 4.902 4.902 0 01-1.153-2.153c-.247-.636-.416-1.363-.465-2.427-.048-1.024-.06-1.378-.06-3.808s.012-2.784.06-3.808c.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-2.153A4.902 4.902 0 016.08 2.525c.636-.247 1.363-.416 2.427-.465C9.53 2.013 9.884 2 12.315 2zm0 2.163c-2.403 0-2.729.01-3.686.06-1.003.045-1.505.2-1.897.37-.473.193-.84.42-1.164.745-.324.325-.552.69-.745 1.164-.17.392-.325.894-.37 1.897-.05 1.002-.06 1.336-.06 3.686s.01 2.684.06 3.686c.045 1.003.2 1.505.37 1.897.193.473.42.84.745 1.164.325.324.69.552 1.164.745.392.17.894.325 1.897.37 1.002.05 1.336.06 3.686.06s2.684-.01 3.686-.06c1.003-.045 1.505-.2 1.897-.37.473-.193.84-.42 1.164-.745.324-.325.552-.69.745-1.164.17-.392.325-.894.37-1.897.05-1.002.06-1.336.06-3.686s-.01-2.684-.06-3.686c-.045-1.003-.2-1.505-.37-1.897-.193-.473-.42-.84-.745-1.164-.325-.324-.69-.552-1.164-.745-.392-.17-.894-.325-1.897-.37-1.002-.05-1.336-.06-3.686-.06zm0 12.943c-3.556 0-6.434-2.878-6.434-6.434s2.878-6.434 6.434-6.434 6.434 2.878 6.434 6.434-2.878 6.434-6.434 6.434zm0-10.845c-2.43 0-4.402 1.972-4.402 4.402s1.972 4.402 4.402 4.402 4.402-1.972 4.402-4.402-1.972-4.402-4.402-4.402zM18.82 7.01c.826 0 1.5-.674 1.5-1.5s-.674-1.5-1.5-1.5-1.5.674-1.5 1.5.674 1.5 1.5 1.5z" clip-rule="evenodd" /></svg>
                     </a>
                     <a href="mailto:saberbrincandorg@gmail.com" class="text-gray-600 hover:text-blue-500 transition-colors">
                         <svg class="w-10 h-10" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M1.5 8.67v8.58a3 3 0 003 3h15a3 3 0 003-3V8.67l-8.928 5.493a3 3 0 01-3.144 0L1.5 8.67z" /><path d="M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a1.5 1.5 0 001.572 0L22.5 6.908z" /></svg>
@@ -439,20 +391,16 @@
     // =================================================================================
     // PÁGINAS (Composição de componentes)
     // =================================================================================
-    const MainPageComponent = () => {
-        const featuredProduct = productsData.find(p => p.featured);
-        return `
+    const MainPageComponent = () => `
         <div id="main-view">
             ${HeaderComponent()}
             <main class="container mx-auto px-4 sm:px-6 py-12">
                 ${HowItWorksComponent()}
-                ${FeaturedProductComponent(featuredProduct)}
                 ${ProductsSectionComponent()}
                 ${InfoAccordionComponent()}
             </main>
         </div>
         ${ContactAndFooterComponent()}`;
-    }
 
     const ProductDetailPageComponent = (productId) => {
         const product = productsData.find(p => p.id === productId);
@@ -491,36 +439,6 @@
     // LÓGICA DE RENDERIZAÇÃO E EVENTOS
     // =================================================================================
     const root = document.getElementById('root');
-    let countdownInterval; // Variável para armazenar o intervalo do countdown
-
-    function startCountdown(endDate, element) {
-        if (!element) return;
-        
-        // Limpa qualquer intervalo anterior para evitar múltiplos contadores
-        if (countdownInterval) clearInterval(countdownInterval);
-
-        countdownInterval = setInterval(() => {
-            const now = new Date().getTime();
-            const distance = endDate - now;
-
-            if (distance < 0) {
-                clearInterval(countdownInterval);
-                element.innerHTML = '<span class="text-red-500 text-2xl font-bold">Oferta Encerrada!</span>';
-                return;
-            }
-
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            document.getElementById('days').innerText = String(days).padStart(2, '0');
-            document.getElementById('hours').innerText = String(hours).padStart(2, '0');
-            document.getElementById('minutes').innerText = String(minutes).padStart(2, '0');
-            document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
-
-        }, 1000);
-    }
 
     function renderProductsAndPagination() {
         const productListContainer = document.getElementById('product-list');
@@ -546,8 +464,11 @@
                 const isActive = question.classList.toggle('active');
                 answer.style.maxHeight = isActive ? answer.scrollHeight + 'px' : null;
 
+                // **CORREÇÃO**: Verifica se o acordeão clicado está dentro de outro acordeão (como o FAQ)
+                // e ajusta a altura do pai para que o conteúdo não seja cortado.
                 const parentAnswer = question.closest('#faq-accordion-item > .accordion-answer');
                 if (parentAnswer && parentAnswer.style.maxHeight) {
+                    // Atraso para esperar a animação do filho terminar
                     setTimeout(() => {
                         parentAnswer.style.maxHeight = parentAnswer.scrollHeight + 'px';
                     }, 510); 
@@ -562,8 +483,8 @@
                  else if (paginationButton.dataset.page) state.currentPage = parseInt(paginationButton.dataset.page);
                  else return;
                 
-                 renderProductsAndPagination();
-                 document.getElementById('jogos')?.scrollIntoView({ behavior: 'smooth' });
+                renderProductsAndPagination();
+                document.getElementById('jogos')?.scrollIntoView({ behavior: 'smooth' });
             }
         });
 
@@ -591,20 +512,6 @@
         
         attachEventListeners();
         
-        // Inicia o countdown se o elemento existir
-        const countdownElement = document.getElementById('countdown');
-        if (countdownElement) {
-            const today = new Date();
-            const dayOfWeek = today.getDay(); // 0-Domingo, 1-Segunda, ...
-            const daysUntilSunday = dayOfWeek === 0 ? 0 : 7 - dayOfWeek;
-            
-            const nextSunday = new Date(today);
-            nextSunday.setDate(today.getDate() + daysUntilSunday);
-            nextSunday.setHours(23, 59, 59, 999);
-
-            startCountdown(nextSunday.getTime(), countdownElement);
-        }
-        
         if (hash === '#jogos') {
             document.getElementById('jogos')?.scrollIntoView();
         }
@@ -616,6 +523,3 @@
     </script>
 </body>
 </html>
-
-
-
